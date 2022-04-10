@@ -6,28 +6,30 @@ pipeline {
         stage('Checkout Codebase'){
             steps{
                 cleanWs()
-                git branch: 'main', url: 'https://github.com/moss-n/junit-automation.git'
+                git branch: 'main', url: 'https://github.com/ValdesChe/jenkins_materials/'
             }
         }
 
         stage('Build'){
             steps{
                 sh 'mkdir lib'
-                sh 'cd lib/ ; wget https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.7.0/junit-platform-console-standalone-1.7.0-all.jar'
-                sh 'cd src ; javac -cp "../lib/junit-platform-console-standalone-1.7.0-all.jar" CarTest.java Car.java App.java'
+                sh 'cd lib/ ; curl -o junit-platform-console-standalone-1.7.0-all.jar https://repo1.maven.org/maven2/org/junit/platform/junit-platform-console-standalone/1.7.0/junit-platform-console-standalone-1.7.0-all.jar'
+                sh 'ls'
+                sh 'cd simple_junit_automation_app/src ; javac -cp "../../lib/junit-platform-console-standalone-1.7.0-all.jar" CarTest.java Car.java App.java'
             }
         }
 
         stage('Test'){
             steps{
-                sh 'cd src/ ; java -jar ../lib/junit-platform-console-standalone-1.7.0-all.jar -cp "." --select-class CarTest --reports-dir="reports"'
-                junit 'src/reports/*-jupiter.xml'
+                sh 'cd simple_junit_automation_app/src ; java -jar ../../lib/junit-platform-console-standalone-1.7.0-all.jar -cp "." --select-class CarTest --reports-dir="reports"'
+                sh 'ls simple_junit_automation_app/src/reports'
+                junit 'simple_junit_automation_app/src/reports/*-jupiter.xml'
             }
         }
-
+        
         stage('Deploy'){
             steps{
-                sh 'cd src/ ; java App' 
+                sh 'cd simple_junit_automation_app/src/ ; java App' 
             }
         }
     }
