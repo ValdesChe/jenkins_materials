@@ -52,6 +52,7 @@ public class CustomerServiceTest {
 
 
     @Test
+    // Intentional failure
     public void testPLZAddressCombination() {
 
         //
@@ -68,7 +69,7 @@ public class CustomerServiceTest {
         //
         // Then
         //
-        assertThat(address, is("47891_221B Bakerstreet"));
+        assertThat(address, is("47891_221B4 Bakerstreet"));
     }
 
 
